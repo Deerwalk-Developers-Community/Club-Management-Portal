@@ -4,8 +4,8 @@ const express = require('express');
 const app = express();
 
 //?config dotenv file
-const dotenv = require('dotenv');
-dotenv.config({ path: './configs/config.env' });
+// currently using docker env
+// const dotenv = require('dotenv');
 
 //?config cors
 const cors = require('cors');
@@ -17,11 +17,6 @@ app.use(
     methods: 'GET,PUT,PATCH,POST,DELETE',
   })
 );
-//?connect to db
-const connectDB = require('./configs/database');
-//connect to db
-const DATABASE_URL = process.env.DATABASE_URL;
-connectDB(DATABASE_URL);
 
 //?config cookie-parser
 const cookieParser = require('cookie-parser');

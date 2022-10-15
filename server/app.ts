@@ -4,8 +4,8 @@ const express = require('express');
 const app = express();
 
 //?config dotenv file
-// currently using docker env
-// const dotenv = require('dotenv');
+const dotenv = require('dotenv');
+dotenv.config({ path: './configs/config.env' });
 
 //?config cors
 const cors = require('cors');
@@ -17,6 +17,11 @@ app.use(
     methods: 'GET,PUT,PATCH,POST,DELETE',
   })
 );
+//?connect to db
+const connectDB = require('./configs/database');
+//connect to db
+const DATABASE_URL = process.env.DATABASE_URL;
+connectDB(DATABASE_URL);
 
 //?config cookie-parser
 const cookieParser = require('cookie-parser');
@@ -33,9 +38,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 //todo: routes imports
-const testRoutes = require('./routes/testRoutes');
 const authRoutes = require('./routes/authRoutes');
-app.use('/api/v1', testRoutes);
 app.use('/api/v1', authRoutes);
 
 app.get('/', (req: Request, res: Response) => {

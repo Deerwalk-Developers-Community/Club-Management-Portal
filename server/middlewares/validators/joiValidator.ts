@@ -24,8 +24,16 @@ const testValidator = (formData: any) => {
 };
 
 //todo:  other validators......
-// const loginValidation = (formData: any) => {};
+const registerValidator = (formData: any) => {
+  const schema = Joi.object({
+    name: Joi.string().max(20).required(),
+    email: Joi.string().email().max(40).required(),
+    password: Joi.string().min(6).max(20).required(),
+  });
 
-module.exports = { testValidator };
+  return schema.validateAsync(formData); //? if formData not valid then return error
+};
+
+module.exports = { testValidator, registerValidator };
 
 //! NOTE: Joi is very specific, if you provide any other field, it will throw an error.

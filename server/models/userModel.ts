@@ -36,8 +36,8 @@ const userSchema: Schema = new Schema<UserSchemaInterface>(
 
     role: {
       type: String,
-      enum: ['subscriber', 'admin'],
-      default: 'subscriber', //? if you type default then required is not necessary
+      enum: ['customer', 'admin'],
+      default: 'customer', //? if you type default then required is not necessary
     },
 
     hashed_password: {
@@ -102,7 +102,10 @@ userSchema.methods = {
     // this is going to return the hashed password
     try {
       //@ts-ignore
-      return createHmac('sha1', this.salt).update(password).digest('hex');
+      return crypto
+        .createHmac('sha1', this.salt)
+        .update(password)
+        .digest('hex');
     } catch (err) {
       // if error occurs while hashing password, it will return empty string
       return '';
@@ -110,10 +113,10 @@ userSchema.methods = {
   },
 
   compareWithEncryptedPassword: function (planeTextPassword: string) {
-    return this.encryptPassword(planeTextPassword) === this.hashed_password; //? returns either true or false
+    return this.encryptPassword(planeTextPassword) === this.hashed_password; //? Will return true or false
   },
 };
 
-const Test: Model<UserSchemaInterface> = mongoose.model('Test', userSchema);
+const User: Model<UserSchemaInterface> = mongoose.model('Users', userSchema);
 
-module.exports = Test;
+module.exports = User;
